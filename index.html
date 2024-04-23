@@ -80,22 +80,22 @@ button:hover {
 </style>
 </head>
 <body>
-<!-- Input form for student details -->
+
 <div id="student-details" class="container">
     <h2>Student Details</h2>
-    <label for="name">Name:</label>
-    <input type="text" id="name"><br>
-    <label for="class">Class:</label>
-    <input type="text" id="class"><br>
+    <label for="name">Roll Number:</label>
+    <input type="text" id="roll" ><br>
+    <label for="class">Name:</label>
+    <input type="text" id="name" ><br>
+    <label for="class">Batch:</label>
+    <input type="text" id="batch" ><br>
     <label for="class">Session:</label>
     <input type="text" id="Session"><br>
-    <label for="class">Batch:</label>
-    <input type="text" id="batch"><br>
-    <!-- Add more fields as needed -->
+    <!-- we can add more fields as needed -->
     <button onclick="startQuiz()">Start Quiz</button>
 </div>
 
-<!-- Quiz section -->
+
 <div id="quiz" class="container" style="display:none;">
     <h2>Quiz</h2>
     <div id="question"></div>
@@ -103,7 +103,7 @@ button:hover {
     <button onclick="submitAnswer()">Submit Answer</button>
 </div>
 
-<!-- Result section -->
+
 <div id="result" style="display:none;">
     <h2>Result</h2>
     <p id="score"></p>
@@ -113,57 +113,68 @@ button:hover {
 // Quiz data
 const quizData = [
     {
-        question: "What is the capital of France?",
-        options: ["Paris", "London", "Berlin", "Rome"],
-        correctAnswer: "Paris"
+        question: "HTML Stand for ?",
+        options: ["Hypertext markup language", "Hypertext marking language", "Hypertext Manging language", "Hyper Text language "],
+        correctAnswer: "Hypertext markup language"
     },
     {
-        question: "Which planet is known as the Red Planet?",
-        options: ["Earth", "Mars", "Venus", "Jupiter"],
-        correctAnswer: "Mars"
+        question: "2. CSS Stand for ?",
+        options: ["Cascading style sheet", "Cascading Script Sheet", "Cascading sheet styling", "Cascading study sheet"],
+        correctAnswer: "Cascading style sheet"
     },
-    // Add more quiz questions here
+    {
+        question: "3. Which of the following are cascading style sheet extension ?",
+        options: [".css",".html",".js",'.txt'],
+        correctAnswer: ".css"
+    },
+    {
+        question: "4.Which of the following are HTML extension  ?",
+        options: [".css",".html",".js",'.txt'],
+        correctAnswer: ".html"
+    },
+    {
+        question: "5. Which of the following are javascript extension ?",
+        options: [".css",".html",".js",'.txt'],
+        correctAnswer: ".js"
+    },
+    // You can add more quiz questions here
 ];
 
-// Variables to store student details
-let studentName = "";
-let studentClass = "";
 
-// Variable to track current question
+let studentRollnumber = "";
+let studentName = "";
+
+
 let currentQuestion = 0;
 
-// Function to start the quiz
+
 function startQuiz() {
-    // Get student details
-    studentName = document.getElementById("name").value;
-    studentClass = document.getElementById("class").value;
     
-    // Hide student details section
+    studentRollnumber = document.getElementById("roll").value;
+    studentName = document.getElementById("name").value;
+    
+    
     document.getElementById("student-details").style.display = "none";
     
-    // Display quiz section
+    
     document.getElementById("quiz").style.display = "block";
     
-    // Display first question
+    
     showQuestion();
 }
 
-// Function to display current question
 function showQuestion() {
     const questionElement = document.getElementById("question");
     const optionsElement = document.getElementById("options");
     
-    // Display question
     questionElement.innerHTML = quizData[currentQuestion].question;
     
-    // Display options
     optionsElement.innerHTML = "";
     quizData[currentQuestion].options.forEach((option, index) => {
         optionsElement.innerHTML += `<div class="option"><input type="radio" name="option" value="${option}" id="option${index}"><label for="option${index}">${option}</label></div>`;
     });
 }
 
-// Function to submit answer
 function submitAnswer() {
     const selectedOption = document.querySelector('input[name="option"]:checked');
     if (!selectedOption) {
@@ -171,13 +182,11 @@ function submitAnswer() {
         return;
     }
     
-    // Check if selected answer is correct
     if (selectedOption.value === quizData[currentQuestion].correctAnswer) {
         // Increment score if answer is correct
         score++;
     }
     
-    // Move to next question or show result
     if (currentQuestion < quizData.length - 1) {
         currentQuestion++;
         showQuestion();
@@ -186,27 +195,25 @@ function submitAnswer() {
     }
 }
 
-// Function to show result
 function showResult() {
     const resultElement = document.getElementById("result");
     const scoreElement = document.getElementById("score");
     
-    // Calculate percentage score
     const percentageScore = (score / quizData.length) * 100;
     
-    // Display result
-    scoreElement.textContent = `Dear ${studentName}, you scored ${score} out of ${quizData.length} (${percentageScore.toFixed(2)}%).`;
+
+    scoreElement.textContent = `Dear ${studentName}, Roll Number  ${studentRollnumber}, you scored ${score} out of ${quizData.length} (${percentageScore.toFixed(2)}%).`;
     
-    // Hide quiz section
     document.getElementById("quiz").style.display = "none";
     
-    // Display result section
+
     resultElement.style.display = "block";
 }
 
+
 let score = 0; // Variable to store score
 
-// Start the quiz when the page loads
+
 window.onload = function() {
     document.getElementById("start-btn").addEventListener("click", startQuiz);
     document.getElementById("submit-btn").addEventListener("click", submitAnswer);
