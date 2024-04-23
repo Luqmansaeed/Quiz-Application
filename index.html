@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Application</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 10px;
+    background-color: #f0f0f0;
+}
+
+.container {
+    max-width: 800px;
+    width: 100%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    margin-top: 0;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#quiz {
+    display: none;
+}
+
+#result {
+    display: none;
+}
+
+#question {
+    margin-bottom: 10px;
+}
+
+#options {
+    margin-bottom: 20px;
+}
+
+.option {
+    margin-bottom: 5px;
+}
+
+.option input[type="radio"] {
+    margin-right: 10px;
+}
+
+#score {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+</style>
+</head>
+<body>
+<!-- Input form for student details -->
+<div id="student-details" class="container">
+    <h2>Student Details</h2>
+    <label for="name">Name:</label>
+    <input type="text" id="name"><br>
+    <label for="class">Class:</label>
+    <input type="text" id="class"><br>
+    <label for="class">Session:</label>
+    <input type="text" id="Session"><br>
+    <label for="class">Batch:</label>
+    <input type="text" id="batch"><br>
+    <!-- Add more fields as needed -->
+    <button onclick="startQuiz()">Start Quiz</button>
+</div>
+
+<!-- Quiz section -->
+<div id="quiz" class="container" style="display:none;">
+    <h2>Quiz</h2>
+    <div id="question"></div>
+    <div id="options"></div>
+    <button onclick="submitAnswer()">Submit Answer</button>
+</div>
+
+<!-- Result section -->
+<div id="result" style="display:none;">
+    <h2>Result</h2>
+    <p id="score"></p>
+</div>
+
+<script>
+// Quiz data
+const quizData = [
+    {
+        question: "What is the capital of France?",
+        options: ["Paris", "London", "Berlin", "Rome"],
+        correctAnswer: "Paris"
+    },
+    {
+        question: "Which planet is known as the Red Planet?",
+        options: ["Earth", "Mars", "Venus", "Jupiter"],
+        correctAnswer: "Mars"
+    },
+    // Add more quiz questions here
+];
+
+// Variables to store student details
+let studentName = "";
+let studentClass = "";
+
+// Variable to track current question
+let currentQuestion = 0;
+
+// Function to start the quiz
+function startQuiz() {
+    // Get student details
+    studentName = document.getElementById("name").value;
+    studentClass = document.getElementById("class").value;
+    
+    // Hide student details section
+    document.getElementById("student-details").style.display = "none";
+    
+    // Display quiz section
+    document.getElementById("quiz").style.display = "block";
+    
+    // Display first question
+    showQuestion();
+}
+
+// Function to display current question
+function showQuestion() {
+    const questionElement = document.getElementById("question");
+    const optionsElement = document.getElementById("options");
+    
+    // Display question
+    questionElement.innerHTML = quizData[currentQuestion].question;
+    
+    // Display options
+    optionsElement.innerHTML = "";
+    quizData[currentQuestion].options.forEach((option, index) => {
+        optionsElement.innerHTML += `<div class="option"><input type="radio" name="option" value="${option}" id="option${index}"><label for="option${index}">${option}</label></div>`;
+    });
+}
+
+// Function to submit answer
+function submitAnswer() {
+    const selectedOption = document.querySelector('input[name="option"]:checked');
+    if (!selectedOption) {
+        alert("Please select an option!");
+        return;
+    }
+    
+    // Check if selected answer is correct
+    if (selectedOption.value === quizData[currentQuestion].correctAnswer) {
+        // Increment score if answer is correct
+        score++;
+    }
+    
+    // Move to next question or show result
+    if (currentQuestion < quizData.length - 1) {
+        currentQuestion++;
+        showQuestion();
+    } else {
+        showResult();
+    }
+}
+
+// Function to show result
+function showResult() {
+    const resultElement = document.getElementById("result");
+    const scoreElement = document.getElementById("score");
+    
+    // Calculate percentage score
+    const percentageScore = (score / quizData.length) * 100;
+    
+    // Display result
+    scoreElement.textContent = `Dear ${studentName}, you scored ${score} out of ${quizData.length} (${percentageScore.toFixed(2)}%).`;
+    
+    // Hide quiz section
+    document.getElementById("quiz").style.display = "none";
+    
+    // Display result section
+    resultElement.style.display = "block";
+}
+
+let score = 0; // Variable to store score
+
+// Start the quiz when the page loads
+window.onload = function() {
+    document.getElementById("start-btn").addEventListener("click", startQuiz);
+    document.getElementById("submit-btn").addEventListener("click", submitAnswer);
+};
+
+</script>
+</body>
+</html>
